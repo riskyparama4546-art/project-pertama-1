@@ -1,1 +1,204 @@
-# project-pertama-1
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Community</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    scroll-behavior:smooth;
+}
+
+header{
+    position:fixed;
+    top:0;
+    width:100%;
+    background:rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 40px;
+    z-index:1000;
+}
+
+header h2{
+    font-weight:700;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+    transition:0.3s;
+}
+
+nav a:hover{
+    color:#00f2fe;
+}
+
+section{
+    min-height:100vh;
+    padding:120px 40px 60px;
+}
+
+.hero{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:40px;
+    margin-bottom:20px;
+}
+
+.btn{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    background:#00f2fe;
+    color:black;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.1);
+}
+
+.card{
+    background:rgba(255,255,255,0.1);
+    padding:25px;
+    border-radius:15px;
+    backdrop-filter: blur(15px);
+    margin:15px 0;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+input, textarea{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+}
+
+footer{
+    text-align:center;
+    padding:20px;
+    background:rgba(0,0,0,0.6);
+}
+
+@media(max-width:768px){
+    header{
+        flex-direction:column;
+    }
+    nav{
+        margin-top:10px;
+    }
+    nav a{
+        margin:10px;
+        display:inline-block;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <h2>Dev Community</h2>
+    <nav>
+        <a href="#beranda">Beranda</a>
+        <a href="#layanan">Layanan</a>
+        <a href="#kontak">Kontak</a>
+        <a href="#tentang">Tentang Dev</a>
+        <a href="#lapor">Laporkan</a>
+    </nav>
+</header>
+
+<section id="beranda" class="hero">
+    <h1>Selamat Datang di Website Dev</h1>
+    <p>Website Modern & Responsive 2026</p>
+    <br>
+    <a href="#lapor"><button class="btn">Buat Laporan</button></a>
+</section>
+
+<section id="layanan">
+    <h2>Layanan</h2>
+    <div class="card">✔ Pembuatan Website</div>
+    <div class="card">✔ UI/UX Modern</div>
+    <div class="card">✔ Sistem Login & Security</div>
+</section>
+
+<section id="kontak">
+    <h2>Kontak</h2>
+    <div class="card">
+        📧 Email: dev@email.com <br><br>
+        📱 WhatsApp: Aktif 24 Jam
+    </div>
+</section>
+
+<section id="tentang">
+    <h2>Tentang Dev</h2>
+    <div class="card">
+        Saya adalah Developer yang fokus pada pembuatan website modern, 
+        sistem keamanan, dan pengembangan teknologi terbaru.
+    </div>
+</section>
+
+<section id="lapor">
+    <h2>Laporkan Keluhan</h2>
+    <div class="card">
+        <form id="formLaporan">
+            <input type="text" id="nama" placeholder="Nama Anda" required>
+            <textarea id="keluhan" rows="5" placeholder="Apa keluhannya?" required></textarea>
+            <button type="submit" class="btn">Kirim Laporan</button>
+        </form>
+    </div>
+</section>
+
+<footer>
+    © 2026 Dev Community | Dibuat oleh Dev
+</footer>
+
+<script>
+document.getElementById("formLaporan").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const nama = document.getElementById("nama").value;
+    const keluhan = document.getElementById("keluhan").value;
+
+    if(keluhan.trim() === ""){
+        alert("Keluhan wajib diisi!");
+        return;
+    }
+
+    const nomorWA = "6281234567890"; // GANTI DENGAN NOMOR KAMU
+    const pesan = `Halo Dev,%0ASaya: ${nama}%0AKeluhan: ${keluhan}`;
+
+    window.open(`https://wa.me/${nomorWA}?text=${pesan}`, "_blank");
+});
+</script>
+
+</body>
+</html>
