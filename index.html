@@ -2,264 +2,275 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Dev Community App</title>
-
-<meta name="theme-color" content="#0f2027">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Quiz Challenge</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
 
 body{
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
 color:white;
-overflow-x:hidden;
-scroll-behavior:smooth;
-}
-
-/* SPLASH */
-#splash{
-position:fixed;
-inset:0;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 display:flex;
 justify-content:center;
 align-items:center;
-flex-direction:column;
-z-index:99999;
+height:100vh;
+margin:0;
 }
 
-#splash h1{
-font-size:28px;
-animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.1);}
-}
-
-/* HEADER */
-header{
-position:fixed;
-top:0;
-width:100%;
-background:rgba(0,0,0,0.6);
-backdrop-filter:blur(10px);
-padding:15px;
-text-align:center;
-z-index:1000;
-}
-
-/* SECTION */
-section{
-min-height:100vh;
-padding:100px 20px 80px;
-opacity:0;
-transform:translateY(40px);
-transition:1s;
-}
-
-section.show{
-opacity:1;
-transform:translateY(0);
-}
-
-.card{
-background:rgba(255,255,255,0.1);
-padding:20px;
+.container{
+background:rgba(0,0,0,0.7);
+padding:30px;
 border-radius:15px;
-margin:15px 0;
-backdrop-filter:blur(10px);
+width:90%;
+max-width:500px;
+text-align:center;
 }
 
-.btn{
+h1{
+margin-bottom:20px;
+}
+
+.question{
+font-size:18px;
+margin-bottom:20px;
+}
+
+.answers button{
+display:block;
+width:100%;
+margin:8px 0;
 padding:12px;
 border:none;
-border-radius:30px;
-background:#00f2fe;
-color:black;
-font-weight:600;
+border-radius:8px;
+font-size:16px;
 cursor:pointer;
-width:100%;
-margin-top:10px;
+transition:0.3s;
 }
 
-input,textarea{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-margin-top:10px;
+.answers button:hover{
+transform:scale(1.05);
 }
 
-/* BOTTOM NAV */
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-background:rgba(0,0,0,0.8);
-display:flex;
-justify-content:space-around;
-padding:10px 0;
-backdrop-filter:blur(10px);
+.correct{
+background:#2ecc71 !important;
 }
 
-.bottom-nav a{
-color:white;
-text-decoration:none;
-font-size:12px;
-text-align:center;
+.wrong{
+background:#e74c3c !important;
 }
 
-.bottom-nav a.active{
-color:#00f2fe;
+.leaderboard{
+margin-top:20px;
+text-align:left;
 }
 
-/* QR */
-.qr{
-text-align:center;
-margin-top:15px;
-}
-
-.qr img{
-width:200px;
-background:white;
+input{
 padding:10px;
-border-radius:15px;
-}
-
-/* INSTALL POPUP */
-#installBtn{
-position:fixed;
-bottom:90px;
-right:20px;
-background:#00f2fe;
-color:black;
-padding:12px 20px;
-border-radius:10px;
-display:none;
-font-weight:600;
-z-index:9999;
+border-radius:8px;
+border:none;
+width:80%;
+margin-bottom:10px;
 }
 
 </style>
 </head>
 <body>
 
-<div id="splash">
-<h1>🚀 Dev Community</h1>
-<p>Loading Application...</p>
+<div class="container">
+
+<h1>Quiz Challenge</h1>
+
+<div id="quiz">
+
+<div class="question" id="question"></div>
+
+<div class="answers" id="answers"></div>
+
 </div>
 
-<header>
-<h2>Dev Community</h2>
-</header>
+<div id="result" style="display:none">
 
-<!-- BERANDA -->
-<section id="home">
-<h2>Selamat Datang</h2>
-<div class="card">
-Website Dev Modern 2026 – Full App Experience
-</div>
-</section>
+<h2>Quiz Selesai</h2>
 
-<!-- LAYANAN -->
-<section id="layanan">
-<h2>Layanan</h2>
-<div class="card">✔ Website Responsif</div>
-<div class="card">✔ UI/UX Modern</div>
-<div class="card">✔ Dashboard Admin</div>
-<div class="card">✔ Integrasi WhatsApp</div>
-<div class="card">✔ Optimasi & Maintenance</div>
-</section>
+<p id="score"></p>
 
-<!-- LAPOR -->
-<section id="lapor">
-<h2>Kirim Laporan</h2>
-<div class="card">
-<input type="text" id="nama" placeholder="Nama">
-<textarea id="pesan" rows="4" placeholder="Tulis laporan..."></textarea>
-<button class="btn" onclick="kirim()">Kirim ke WhatsApp</button>
-</div>
-</section>
+<input type="text" id="name" placeholder="Masukkan nama">
 
-<!-- KONTAK -->
-<section id="kontak">
-<h2>Kontak Dev</h2>
-<div class="card">
-WhatsApp Aktif 24 Jam
-<div class="qr">
-<h4>Scan QR WhatsApp</h4>
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://wa.me/6285236936481">
-</div>
-</div>
-</section>
+<br><br>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-<a href="#home">🏠<br>Home</a>
-<a href="#layanan">🛠<br>Layanan</a>
-<a href="#lapor">📩<br>Lapor</a>
-<a href="#kontak">📞<br>Kontak</a>
+<button onclick="saveScore()">Simpan Score</button>
+
+<div class="leaderboard">
+
+<h3>Leaderboard</h3>
+
+<ol id="leaderboard"></ol>
+
 </div>
 
-<div id="installBtn">Install App 📲</div>
+</div>
+
+</div>
 
 <script>
 
-/* Splash */
-window.addEventListener("load",()=>{
+const questions=[
+
+// SEJARAH
+{q:"Siapa presiden pertama Indonesia?",a:["Soekarno","Suharto","Habibie","Megawati"],c:0},
+{q:"Perang Diponegoro terjadi tahun?",a:["1825","1900","1945","1800"],c:0},
+{q:"Proklamasi Indonesia dibacakan di?",a:["Jakarta","Bandung","Surabaya","Yogyakarta"],c:0},
+{q:"Siapa penemu benua Amerika?",a:["Columbus","Magellan","Newton","Tesla"],c:0},
+{q:"Kerajaan Majapahit berdiri di?",a:["Jawa Timur","Bali","Sumatra","Kalimantan"],c:0},
+
+// MTK DERET
+{q:"2,4,6,8,... suku ke-5?",a:["10","12","14","16"],c:0},
+{q:"3,6,9,12,... beda?",a:["3","2","4","5"],c:0},
+{q:"5,10,15,... suku ke-6?",a:["30","35","40","45"],c:0},
+{q:"1,4,7,... beda?",a:["3","4","5","2"],c:0},
+{q:"10,20,30,... suku ke-4?",a:["40","50","60","70"],c:0},
+
+// ASTRONOMI
+{q:"Planet terbesar?",a:["Jupiter","Mars","Venus","Merkurius"],c:0},
+{q:"Bintang pusat tata surya?",a:["Matahari","Polaris","Sirius","Vega"],c:0},
+{q:"Planet merah?",a:["Mars","Venus","Saturnus","Jupiter"],c:0},
+{q:"Galaksi tempat bumi berada?",a:["Bima Sakti","Andromeda","Orion","Pegasus"],c:0},
+{q:"Satelit alami bumi?",a:["Bulan","Phobos","Europa","Titan"],c:0},
+
+// BAHASA INDONESIA
+{q:"Antonim 'besar'?",a:["Kecil","Tinggi","Panjang","Lebar"],c:0},
+{q:"Sinonim 'cepat'?",a:["Lekas","Lambat","Pelan","Diam"],c:0},
+{q:"Kalimat tanya diakhiri tanda?",a:["?","!",".",","],c:0},
+{q:"'Aku membaca buku' termasuk?",a:["Kalimat aktif","Kalimat pasif","Majas","Frasa"],c:0},
+{q:"Lawan kata 'panas'?",a:["Dingin","Hangat","Sejuk","Beku"],c:0},
+{q:"Sinonim 'indah'?",a:["Cantik","Buruk","Kasar","Gelap"],c:0},
+{q:"Huruf kapital dipakai untuk?",a:["Awal kalimat","Tengah kata","Akhir kalimat","Angka"],c:0},
+{q:"Kata kerja disebut?",a:["Verba","Nomina","Adjektiva","Konjungsi"],c:0},
+{q:"Kalimat perintah diakhiri?",a:["!","?",".",","],c:0},
+{q:"Lawan kata 'tinggi'?",a:["Rendah","Pendek","Kecil","Tipis"],c:0},
+
+// KANJI
+{q:"Kanji 山 artinya?",a:["Gunung","Air","Api","Langit"],c:0},
+{q:"Kanji 水 artinya?",a:["Air","Api","Tanah","Langit"],c:0},
+{q:"Kanji 火 artinya?",a:["Api","Air","Angin","Langit"],c:0},
+{q:"Kanji 木 artinya?",a:["Pohon","Gunung","Api","Air"],c:0},
+{q:"Kanji 日 artinya?",a:["Matahari","Bulan","Air","Api"],c:0},
+{q:"Kanji 月 artinya?",a:["Bulan","Hari","Api","Angin"],c:0},
+{q:"Kanji 人 artinya?",a:["Orang","Gunung","Api","Air"],c:0},
+{q:"Kanji 口 artinya?",a:["Mulut","Mata","Hidung","Telinga"],c:0},
+{q:"Kanji 目 artinya?",a:["Mata","Mulut","Tangan","Kaki"],c:0}
+
+];
+
+let index=0;
+let score=0;
+
+const question=document.getElementById("question");
+const answers=document.getElementById("answers");
+
+function loadQuestion(){
+
+let q=questions[index];
+
+question.innerText=(index+1)+". "+q.q;
+
+answers.innerHTML="";
+
+q.a.forEach((text,i)=>{
+
+let btn=document.createElement("button");
+btn.innerText=text;
+
+btn.onclick=()=>selectAnswer(btn,i);
+
+answers.appendChild(btn);
+
+});
+
+}
+
+function selectAnswer(btn,i){
+
+let correct=questions[index].c;
+
+if(i===correct){
+btn.classList.add("correct");
+score++;
+}else{
+btn.classList.add("wrong");
+answers.children[correct].classList.add("correct");
+}
+
 setTimeout(()=>{
-document.getElementById("splash").style.display="none";
-},2000);
-});
 
-/* Scroll animation */
-const sections=document.querySelectorAll("section");
-const observer=new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
-}
-});
-},{threshold:0.2});
-sections.forEach(section=>observer.observe(section));
+index++;
 
-/* WhatsApp */
-function kirim(){
-let nama=document.getElementById("nama").value;
-let pesan=document.getElementById("pesan").value;
-if(pesan===""){alert("Isi laporan dulu!");return;}
-let nomor="6285236936481";
-let text=`Halo Dev,%0ANama: ${nama}%0ALaporan: ${pesan}`;
-window.open(`https://wa.me/${6285236936481}?text=${text}`,"_blank");
+if(index<questions.length){
+loadQuestion();
+}else{
+showResult();
 }
 
-/* PWA install */
-let deferredPrompt;
-const installBtn=document.getElementById("installBtn");
+},700);
 
-window.addEventListener('beforeinstallprompt',(e)=>{
-e.preventDefault();
-deferredPrompt=e;
-installBtn.style.display="block";
+}
+
+function showResult(){
+
+document.getElementById("quiz").style.display="none";
+document.getElementById("result").style.display="block";
+
+document.getElementById("score").innerText=
+"Score kamu: "+score+" / "+questions.length;
+
+loadLeaderboard();
+
+}
+
+function saveScore(){
+
+let name=document.getElementById("name").value;
+
+if(!name)return;
+
+let leaderboard=
+JSON.parse(localStorage.getItem("quizLeaderboard"))||[];
+
+leaderboard.push({name,score});
+
+leaderboard.sort((a,b)=>b.score-a.score);
+
+leaderboard=leaderboard.slice(0,10);
+
+localStorage.setItem("quizLeaderboard",JSON.stringify(leaderboard));
+
+loadLeaderboard();
+
+}
+
+function loadLeaderboard(){
+
+let leaderboard=
+JSON.parse(localStorage.getItem("quizLeaderboard"))||[];
+
+let list=document.getElementById("leaderboard");
+
+list.innerHTML="";
+
+leaderboard.forEach(player=>{
+
+let li=document.createElement("li");
+
+li.innerText=player.name+" - "+player.score;
+
+list.appendChild(li);
+
 });
 
-installBtn.addEventListener("click",()=>{
-installBtn.style.display="none";
-deferredPrompt.prompt();
-});
+}
+
+loadQuestion();
 
 </script>
 
