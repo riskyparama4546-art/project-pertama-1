@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Quiz Challenge</title>
+<title>Mega Quiz Challenge</title>
 
 <style>
 
 body{
-font-family:Arial, sans-serif;
-background:linear-gradient(135deg,#1e3c72,#2a5298);
+font-family:Arial;
+background:linear-gradient(135deg,#141e30,#243b55);
 color:white;
 display:flex;
 justify-content:center;
@@ -22,17 +22,15 @@ margin:0;
 background:rgba(0,0,0,0.7);
 padding:30px;
 border-radius:15px;
-width:90%;
-max-width:500px;
+width:95%;
+max-width:600px;
 text-align:center;
 }
 
-h1{
-margin-bottom:20px;
-}
+h2{margin-bottom:10px}
 
 .question{
-font-size:18px;
+font-size:20px;
 margin-bottom:20px;
 }
 
@@ -45,32 +43,22 @@ border:none;
 border-radius:8px;
 font-size:16px;
 cursor:pointer;
-transition:0.3s;
+transition:0.2s;
 }
 
 .answers button:hover{
-transform:scale(1.05);
+transform:scale(1.03);
 }
 
-.correct{
-background:#2ecc71 !important;
-}
-
-.wrong{
-background:#e74c3c !important;
-}
-
-.leaderboard{
-margin-top:20px;
-text-align:left;
-}
+.correct{background:#2ecc71}
+.wrong{background:#e74c3c}
 
 input{
 padding:10px;
-border-radius:8px;
 border:none;
-width:80%;
-margin-bottom:10px;
+border-radius:8px;
+margin-top:10px;
+width:70%;
 }
 
 </style>
@@ -79,14 +67,11 @@ margin-bottom:10px;
 
 <div class="container">
 
-<h1>Quiz Challenge</h1>
+<h2>Mega Quiz</h2>
 
 <div id="quiz">
-
 <div class="question" id="question"></div>
-
 <div class="answers" id="answers"></div>
-
 </div>
 
 <div id="result" style="display:none">
@@ -95,19 +80,14 @@ margin-bottom:10px;
 
 <p id="score"></p>
 
-<input type="text" id="name" placeholder="Masukkan nama">
+<input id="name" placeholder="Masukkan nama">
 
 <br><br>
 
 <button onclick="saveScore()">Simpan Score</button>
 
-<div class="leaderboard">
-
 <h3>Leaderboard</h3>
-
 <ol id="leaderboard"></ol>
-
-</div>
 
 </div>
 
@@ -115,162 +95,259 @@ margin-bottom:10px;
 
 <script>
 
-const questions=[
+/* RANDOM */
+
+function shuffle(arr){
+return arr.sort(()=>Math.random()-0.5)
+}
+
+/* SOAL UMUM */
+
+const generalQuestions=[
 
 // SEJARAH
-{q:"Siapa presiden pertama Indonesia?",a:["Soekarno","Suharto","Habibie","Megawati"],c:0},
-{q:"Perang Diponegoro terjadi tahun?",a:["1825","1900","1945","1800"],c:0},
-{q:"Proklamasi Indonesia dibacakan di?",a:["Jakarta","Bandung","Surabaya","Yogyakarta"],c:0},
-{q:"Siapa penemu benua Amerika?",a:["Columbus","Magellan","Newton","Tesla"],c:0},
-{q:"Kerajaan Majapahit berdiri di?",a:["Jawa Timur","Bali","Sumatra","Kalimantan"],c:0},
+{q:"Siapa presiden pertama Indonesia?",a:["Soekarno","Suharto","Habibie","Megawati"],c:"Soekarno"},
+{q:"Perang Diponegoro terjadi tahun?",a:["1825","1900","1945","1800"],c:"1825"},
+{q:"Proklamasi Indonesia dibacakan di?",a:["Jakarta","Bandung","Surabaya","Yogyakarta"],c:"Jakarta"},
+{q:"Kerajaan Majapahit berada di?",a:["Jawa Timur","Bali","Sumatra","Kalimantan"],c:"Jawa Timur"},
+{q:"Penemu benua Amerika?",a:["Columbus","Magellan","Newton","Tesla"],c:"Columbus"},
 
-// MTK DERET
-{q:"2,4,6,8,... suku ke-5?",a:["10","12","14","16"],c:0},
-{q:"3,6,9,12,... beda?",a:["3","2","4","5"],c:0},
-{q:"5,10,15,... suku ke-6?",a:["30","35","40","45"],c:0},
-{q:"1,4,7,... beda?",a:["3","4","5","2"],c:0},
-{q:"10,20,30,... suku ke-4?",a:["40","50","60","70"],c:0},
+// MATEMATIKA
+{q:"2,4,6,8,... suku ke5?",a:["10","12","14","16"],c:"10"},
+{q:"3,6,9,12 beda deret?",a:["3","2","4","5"],c:"3"},
+{q:"5,10,15 suku ke6?",a:["30","35","40","45"],c:"30"},
+{q:"1,4,7 beda deret?",a:["3","2","4","5"],c:"3"},
+{q:"10,20,30 suku ke4?",a:["40","50","60","70"],c:"40"},
 
 // ASTRONOMI
-{q:"Planet terbesar?",a:["Jupiter","Mars","Venus","Merkurius"],c:0},
-{q:"Bintang pusat tata surya?",a:["Matahari","Polaris","Sirius","Vega"],c:0},
-{q:"Planet merah?",a:["Mars","Venus","Saturnus","Jupiter"],c:0},
-{q:"Galaksi tempat bumi berada?",a:["Bima Sakti","Andromeda","Orion","Pegasus"],c:0},
-{q:"Satelit alami bumi?",a:["Bulan","Phobos","Europa","Titan"],c:0},
+{q:"Planet terbesar?",a:["Jupiter","Mars","Venus","Saturnus"],c:"Jupiter"},
+{q:"Bintang pusat tata surya?",a:["Matahari","Sirius","Polaris","Vega"],c:"Matahari"},
+{q:"Planet merah?",a:["Mars","Venus","Saturnus","Merkurius"],c:"Mars"},
+{q:"Galaksi bumi?",a:["Bima Sakti","Andromeda","Orion","Pegasus"],c:"Bima Sakti"},
+{q:"Satelit alami bumi?",a:["Bulan","Europa","Titan","Phobos"],c:"Bulan"},
 
 // BAHASA INDONESIA
-{q:"Antonim 'besar'?",a:["Kecil","Tinggi","Panjang","Lebar"],c:0},
-{q:"Sinonim 'cepat'?",a:["Lekas","Lambat","Pelan","Diam"],c:0},
-{q:"Kalimat tanya diakhiri tanda?",a:["?","!",".",","],c:0},
-{q:"'Aku membaca buku' termasuk?",a:["Kalimat aktif","Kalimat pasif","Majas","Frasa"],c:0},
-{q:"Lawan kata 'panas'?",a:["Dingin","Hangat","Sejuk","Beku"],c:0},
-{q:"Sinonim 'indah'?",a:["Cantik","Buruk","Kasar","Gelap"],c:0},
-{q:"Huruf kapital dipakai untuk?",a:["Awal kalimat","Tengah kata","Akhir kalimat","Angka"],c:0},
-{q:"Kata kerja disebut?",a:["Verba","Nomina","Adjektiva","Konjungsi"],c:0},
-{q:"Kalimat perintah diakhiri?",a:["!","?",".",","],c:0},
-{q:"Lawan kata 'tinggi'?",a:["Rendah","Pendek","Kecil","Tipis"],c:0},
+{q:"Antonim besar?",a:["Kecil","Panjang","Lebar","Tinggi"],c:"Kecil"},
+{q:"Sinonim cepat?",a:["Lekas","Lambat","Diam","Pelan"],c:"Lekas"},
+{q:"Kalimat tanya diakhiri?",a:["?","!",".",","],c:"?"},
+{q:"Lawan kata panas?",a:["Dingin","Hangat","Sejuk","Beku"],c:"Dingin"},
+{q:"Sinonim indah?",a:["Cantik","Buruk","Kasar","Gelap"],c:"Cantik"},
+{q:"Huruf kapital digunakan?",a:["Awal kalimat","Tengah kata","Akhir kalimat","Angka"],c:"Awal kalimat"},
+{q:"Kata kerja disebut?",a:["Verba","Nomina","Adjektiva","Konjungsi"],c:"Verba"},
+{q:"Kalimat perintah diakhiri?",a:["!","?",".",","],c:"!"},
+{q:"Lawan kata tinggi?",a:["Rendah","Pendek","Kecil","Tipis"],c:"Rendah"},
+{q:"Aku membaca buku termasuk?",a:["Kalimat aktif","Kalimat pasif","Frasa","Majas"],c:"Kalimat aktif"},
 
 // KANJI
-{q:"Kanji 山 artinya?",a:["Gunung","Air","Api","Langit"],c:0},
-{q:"Kanji 水 artinya?",a:["Air","Api","Tanah","Langit"],c:0},
-{q:"Kanji 火 artinya?",a:["Api","Air","Angin","Langit"],c:0},
-{q:"Kanji 木 artinya?",a:["Pohon","Gunung","Api","Air"],c:0},
-{q:"Kanji 日 artinya?",a:["Matahari","Bulan","Air","Api"],c:0},
-{q:"Kanji 月 artinya?",a:["Bulan","Hari","Api","Angin"],c:0},
-{q:"Kanji 人 artinya?",a:["Orang","Gunung","Api","Air"],c:0},
-{q:"Kanji 口 artinya?",a:["Mulut","Mata","Hidung","Telinga"],c:0},
-{q:"Kanji 目 artinya?",a:["Mata","Mulut","Tangan","Kaki"],c:0}
+{q:"Kanji 山 artinya?",a:["Gunung","Air","Api","Langit"],c:"Gunung"},
+{q:"Kanji 水 artinya?",a:["Air","Api","Tanah","Langit"],c:"Air"},
+{q:"Kanji 火 artinya?",a:["Api","Air","Angin","Langit"],c:"Api"},
+{q:"Kanji 木 artinya?",a:["Pohon","Gunung","Api","Air"],c:"Pohon"},
+{q:"Kanji 日 artinya?",a:["Matahari","Bulan","Air","Api"],c:"Matahari"},
+{q:"Kanji 月 artinya?",a:["Bulan","Hari","Api","Angin"],c:"Bulan"},
+{q:"Kanji 人 artinya?",a:["Orang","Gunung","Api","Air"],c:"Orang"},
+{q:"Kanji 口 artinya?",a:["Mulut","Mata","Hidung","Telinga"],c:"Mulut"},
+{q:"Kanji 目 artinya?",a:["Mata","Mulut","Tangan","Kaki"],c:"Mata"}
 
-];
+]
 
-let index=0;
-let score=0;
+/* HIRAGANA */
 
-const question=document.getElementById("question");
-const answers=document.getElementById("answers");
+const hiragana=[
+["あ","a"],["い","i"],["う","u"],["え","e"],["お","o"],
+["か","ka"],["き","ki"],["く","ku"],["け","ke"],["こ","ko"],
+["さ","sa"],["し","shi"],["す","su"],["せ","se"],["そ","so"],
+["た","ta"],["ち","chi"],["つ","tsu"],["て","te"],["と","to"],
+["な","na"],["に","ni"],["ぬ","nu"],["ね","ne"],["の","no"],
+["は","ha"],["ひ","hi"],["ふ","fu"],["へ","he"],["ほ","ho"]
+]
 
-function loadQuestion(){
+/* KATAKANA */
 
-let q=questions[index];
+const katakana=[
+["ア","a"],["イ","i"],["ウ","u"],["エ","e"],["オ","o"],
+["カ","ka"],["キ","ki"],["ク","ku"],["ケ","ke"],["コ","ko"],
+["サ","sa"],["シ","shi"],["ス","su"],["セ","se"],["ソ","so"],
+["タ","ta"],["チ","chi"],["ツ","tsu"],["テ","te"],["ト","to"],
+["ナ","na"],["ニ","ni"],["ヌ","nu"],["ネ","ne"],["ノ","no"],
+["ハ","ha"],["ヒ","hi"],["フ","fu"],["ヘ","he"],["ホ","ho"],
+["マ","ma"],["ミ","mi"],["ム","mu"],["メ","me"],["モ","mo"],
+["ヤ","ya"],["ユ","yu"],["ヨ","yo"],
+["ラ","ra"],["リ","ri"],["ル","ru"],["レ","re"],["ロ","ro"],
+["ワ","wa"],["ヲ","wo"],["ン","n"]
+]
 
-question.innerText=(index+1)+". "+q.q;
+function generateKana(list,label){
 
-answers.innerHTML="";
+let q=[]
 
-q.a.forEach((text,i)=>{
+list.forEach(item=>{
 
-let btn=document.createElement("button");
-btn.innerText=text;
+let char=item[0]
+let correct=item[1]
 
-btn.onclick=()=>selectAnswer(btn,i);
+let options=[correct]
 
-answers.appendChild(btn);
+while(options.length<4){
 
-});
+let r=list[Math.floor(Math.random()*list.length)][1]
+
+if(!options.includes(r)) options.push(r)
 
 }
 
-function selectAnswer(btn,i){
+options=shuffle(options)
 
-let correct=questions[index].c;
+q.push({
+q:label+" "+char+" artinya?",
+a:options,
+c:correct
+})
 
-if(i===correct){
-btn.classList.add("correct");
-score++;
+})
+
+return q
+
+}
+
+/* GABUNG SOAL */
+
+let questions=[
+...generalQuestions,
+...generateKana(hiragana,"Hiragana"),
+...generateKana(katakana,"Katakana")
+]
+
+questions=shuffle(questions)
+
+/* SOAL TERAKHIR */
+
+questions.push({
+q:"Apakah kamu karbit? (Jawab jujur)",
+a:["Ya","Tidak"],
+c:null,
+honest:true
+})
+
+/* QUIZ */
+
+let index=0
+let score=0
+
+const q=document.getElementById("question")
+const a=document.getElementById("answers")
+
+function load(){
+
+let data=questions[index]
+
+q.innerText=(index+1)+". "+data.q
+
+a.innerHTML=""
+
+data.a.forEach(opt=>{
+
+let btn=document.createElement("button")
+
+btn.innerText=opt
+
+btn.onclick=()=>answer(btn,opt,data)
+
+a.appendChild(btn)
+
+})
+
+}
+
+function answer(btn,choice,data){
+
+if(data.honest){
+
+btn.style.background="#f1c40f"
+
 }else{
-btn.classList.add("wrong");
-answers.children[correct].classList.add("correct");
+
+if(choice===data.c){
+btn.classList.add("correct")
+score++
+}else{
+
+btn.classList.add("wrong")
+
+Array.from(a.children).forEach(b=>{
+if(b.innerText===data.c) b.classList.add("correct")
+})
+
+}
+
 }
 
 setTimeout(()=>{
 
-index++;
+index++
 
-if(index<questions.length){
-loadQuestion();
-}else{
-showResult();
-}
+if(index<questions.length) load()
+else finish()
 
-},700);
+},700)
 
 }
 
-function showResult(){
+function finish(){
 
-document.getElementById("quiz").style.display="none";
-document.getElementById("result").style.display="block";
+document.getElementById("quiz").style.display="none"
+document.getElementById("result").style.display="block"
 
 document.getElementById("score").innerText=
-"Score kamu: "+score+" / "+questions.length;
+"Score kamu: "+score+" / "+(questions.length-1)
 
-loadLeaderboard();
+loadBoard()
 
 }
+
+/* LEADERBOARD */
 
 function saveScore(){
 
-let name=document.getElementById("name").value;
+let name=document.getElementById("name").value
 
-if(!name)return;
+if(!name)return
 
-let leaderboard=
-JSON.parse(localStorage.getItem("quizLeaderboard"))||[];
+let board=JSON.parse(localStorage.getItem("quizBoard"))||[]
 
-leaderboard.push({name,score});
+board.push({name,score})
 
-leaderboard.sort((a,b)=>b.score-a.score);
+board.sort((a,b)=>b.score-a.score)
 
-leaderboard=leaderboard.slice(0,10);
+board=board.slice(0,10)
 
-localStorage.setItem("quizLeaderboard",JSON.stringify(leaderboard));
+localStorage.setItem("quizBoard",JSON.stringify(board))
 
-loadLeaderboard();
-
-}
-
-function loadLeaderboard(){
-
-let leaderboard=
-JSON.parse(localStorage.getItem("quizLeaderboard"))||[];
-
-let list=document.getElementById("leaderboard");
-
-list.innerHTML="";
-
-leaderboard.forEach(player=>{
-
-let li=document.createElement("li");
-
-li.innerText=player.name+" - "+player.score;
-
-list.appendChild(li);
-
-});
+loadBoard()
 
 }
 
-loadQuestion();
+function loadBoard(){
+
+let board=JSON.parse(localStorage.getItem("quizBoard"))||[]
+
+let list=document.getElementById("leaderboard")
+
+list.innerHTML=""
+
+board.forEach(p=>{
+
+let li=document.createElement("li")
+
+li.innerText=p.name+" - "+p.score
+
+list.appendChild(li)
+
+})
+
+}
+
+load()
 
 </script>
 
