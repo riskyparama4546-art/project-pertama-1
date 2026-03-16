@@ -6,117 +6,59 @@
 <title>Konstitusi NUSACYBERA</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    --cyan: #00f0ff;
-    --cyan2: #00b4d8;
-    --gold: #ffd166;
-    --gold2: #f4a51b;
-    --dark: #020c1b;
-    --dark2: #071428;
-    --dark3: #0d1f3c;
-    --white: #e8f4ff;
-    --dim: rgba(0,240,255,0.12);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: #010810;
-    display: flex;
-    justify-content: center;
-    padding: 30px 16px 60px;
-    font-family: 'Rajdhani', sans-serif;
-  }
-  .poster {
-    width: 700px;
-    background: var(--dark);
-    border: 1.5px solid rgba(0,240,255,0.35);
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 0 0 60px rgba(0,180,216,0.18), inset 0 0 80px rgba(0,15,40,0.8);
-  }
-  .poster::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .content { position: relative; z-index: 1; }
-  .header {
-    background: linear-gradient(135deg, #04111f 0%, #071e3d 50%, #030e1e 100%);
-    border-bottom: 2px solid var(--cyan);
-    padding: 32px 36px 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 60%; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  }
-  .shield-wrap { display: flex; justify-content: center; margin-bottom: 14px; }
-  .shield { width: 72px; height: 80px; position: relative; }
-  .shield svg { width: 100%; height: 100%; filter: drop-shadow(0 0 10px var(--cyan)); }
-  .org-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 34px;
-    font-weight: 900;
-    letter-spacing: 6px;
-    background: linear-gradient(90deg, var(--cyan), #fff, var(--cyan2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    filter: drop-shadow(0 0 12px rgba(0,240,255,0.5));
-    margin-bottom: 6px;
-  }
-  .subtitle { font-family: 'Share Tech Mono', monospace; color: var(--gold); font-size: 13px; letter-spacing: 5px; opacity: 0.9; }
-  .scroll-title { font-family: 'Orbitron', monospace; font-size: 11px; color: var(--cyan2); letter-spacing: 8px; margin-top: 10px; opacity: 0.7; }
-  .corner { position: absolute; width: 22px; height: 22px; }
-  .corner.tl { top:12px; left:14px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-  .corner.tr { top:12px; right:14px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-  .corner.bl { bottom:12px; left:14px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); }
-  .corner.br { bottom:12px; right:14px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); }
-  .opening { background: linear-gradient(90deg, rgba(0,180,216,0.08), rgba(0,240,255,0.05), rgba(0,180,216,0.08)); border-left: 3px solid var(--gold); margin: 22px 28px; padding: 14px 18px; border-radius: 0 8px 8px 0; }
-  .opening-label { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 4px; margin-bottom: 6px; }
-  .opening p { color: var(--white); font-size: 14px; line-height: 1.7; opacity: 0.85; }
-  .divider { display: flex; align-items: center; gap: 10px; margin: 0 28px 20px; }
-  .divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan2), transparent); }
-  .divider-dot { width: 5px; height: 5px; background: var(--cyan); border-radius: 50%; box-shadow: 0 0 6px var(--cyan); }
-  .bab { margin: 0 20px 22px; background: rgba(7,20,40,0.7); border: 1px solid rgba(0,240,255,0.15); border-radius: 10px; overflow: hidden; }
-  .bab-header { background: linear-gradient(90deg, rgba(0,180,216,0.2), rgba(0,50,80,0.3)); padding: 10px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(0,240,255,0.2); }
-  .bab-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 2px; white-space: nowrap; }
-  .bab-title { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: var(--cyan); letter-spacing: 3px; }
-  .bab-body { padding: 16px 18px; }
-  .pasal { margin-bottom: 14px; }
-  .pasal:last-child { margin-bottom: 0; }
-  .pasal-num { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan2); letter-spacing: 3px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
-  .pasal-num::after { content: ''; flex: 1; height: 1px; background: rgba(0,240,255,0.15); }
-  .pasal-text { color: var(--white); font-size: 14px; line-height: 1.65; opacity: 0.88; }
-  .bullet-list { list-style: none; margin-top: 6px; }
-  .bullet-list li { color: var(--white); font-size: 14px; line-height: 1.65; opacity: 0.88; padding: 3px 0 3px 22px; position: relative; }
-  .bullet-list li::before { content: '▸'; position: absolute; left: 0; color: var(--cyan); font-size: 12px; }
-  .misi-list { list-style: none; margin-top: 6px; counter-reset: misi; }
-  .misi-list li { color: var(--white); font-size: 14px; line-height: 1.65; opacity: 0.88; padding: 3px 0 3px 28px; position: relative; counter-increment: misi; }
-  .misi-list li::before { content: counter(misi) '.'; position: absolute; left: 0; color: var(--gold); font-family: 'Share Tech Mono', monospace; font-size: 12px; }
-  .nilai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
-  .nilai-card { background: linear-gradient(135deg, rgba(0,180,216,0.1), rgba(0,60,100,0.15)); border: 1px solid rgba(0,240,255,0.2); border-radius: 8px; padding: 10px 14px; text-align: center; }
-  .nilai-icon { font-size: 20px; margin-bottom: 4px; }
-  .nilai-name { font-family: 'Orbitron', monospace; font-size: 10px; color: var(--cyan); letter-spacing: 2px; font-weight: 700; }
-  .info-box { background: linear-gradient(135deg, rgba(244,165,27,0.1), rgba(255,100,0,0.05)); border: 1px solid rgba(244,165,27,0.35); border-radius: 8px; padding: 10px 14px; margin-top: 6px; display: flex; gap: 10px; align-items: flex-start; }
-  .info-icon { font-size: 18px; flex-shrink: 0; }
-  .info-text { color: var(--white); font-size: 13.5px; line-height: 1.6; opacity: 0.9; }
-  .footer { border-top: 1px solid rgba(0,240,255,0.2); margin: 8px 20px 0; padding: 16px 0 24px; text-align: center; }
-  .footer-line { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--cyan2); letter-spacing: 4px; opacity: 0.6; margin-bottom: 6px; }
-  .footer-brand { font-family: 'Orbitron', monospace; font-size: 18px; font-weight: 900; letter-spacing: 5px; background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 0 8px rgba(255,209,102,0.4)); }
-  @keyframes scan { 0% { transform: translateY(-100%); } 100% { transform: translateY(2000px); } }
-  .scanline { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(transparent, rgba(0,240,255,0.08), transparent); animation: scan 6s linear infinite; pointer-events: none; z-index: 2; }
+  :root{--cyan:#00f0ff;--cyan2:#00b4d8;--gold:#ffd166;--gold2:#f4a51b;--dark:#020c1b;--dark2:#071428;--dark3:#0d1f3c;--white:#e8f4ff;--dim:rgba(0,240,255,0.12);}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:#010810;display:flex;justify-content:center;padding:30px 16px 60px;font-family:'Rajdhani',sans-serif;}
+  .poster{width:700px;background:var(--dark);border:1.5px solid rgba(0,240,255,0.35);border-radius:16px;overflow:hidden;position:relative;box-shadow:0 0 60px rgba(0,180,216,0.18),inset 0 0 80px rgba(0,15,40,0.8);}
+  .poster::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,240,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,0.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+  .content{position:relative;z-index:1;}
+  .header{background:linear-gradient(135deg,#04111f 0%,#071e3d 50%,#030e1e 100%);border-bottom:2px solid var(--cyan);padding:32px 36px 24px;text-align:center;position:relative;overflow:hidden;}
+  .header::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .shield-wrap{display:flex;justify-content:center;margin-bottom:14px;}
+  .shield{width:72px;height:80px;position:relative;}
+  .shield svg{width:100%;height:100%;filter:drop-shadow(0 0 10px var(--cyan));}
+  .org-name{font-family:'Orbitron',monospace;font-size:34px;font-weight:900;letter-spacing:6px;background:linear-gradient(90deg,var(--cyan),#fff,var(--cyan2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 12px rgba(0,240,255,0.5));margin-bottom:6px;}
+  .subtitle{font-family:'Share Tech Mono',monospace;color:var(--gold);font-size:13px;letter-spacing:5px;opacity:0.9;}
+  .scroll-title{font-family:'Orbitron',monospace;font-size:11px;color:var(--cyan2);letter-spacing:8px;margin-top:10px;opacity:0.7;}
+  .corner{position:absolute;width:22px;height:22px;}
+  .corner.tl{top:12px;left:14px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);}
+  .corner.tr{top:12px;right:14px;border-top:2px solid var(--gold);border-right:2px solid var(--gold);}
+  .corner.bl{bottom:12px;left:14px;border-bottom:2px solid var(--gold);border-left:2px solid var(--gold);}
+  .corner.br{bottom:12px;right:14px;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);}
+  .opening{background:linear-gradient(90deg,rgba(0,180,216,0.08),rgba(0,240,255,0.05),rgba(0,180,216,0.08));border-left:3px solid var(--gold);margin:22px 28px;padding:14px 18px;border-radius:0 8px 8px 0;}
+  .opening-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:4px;margin-bottom:6px;}
+  .opening p{color:var(--white);font-size:14px;line-height:1.7;opacity:0.85;}
+  .divider{display:flex;align-items:center;gap:10px;margin:0 28px 20px;}
+  .divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--cyan2),transparent);}
+  .divider-dot{width:5px;height:5px;background:var(--cyan);border-radius:50%;box-shadow:0 0 6px var(--cyan);}
+  .bab{margin:0 20px 22px;background:rgba(7,20,40,0.7);border:1px solid rgba(0,240,255,0.15);border-radius:10px;overflow:hidden;}
+  .bab-header{background:linear-gradient(90deg,rgba(0,180,216,0.2),rgba(0,50,80,0.3));padding:10px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(0,240,255,0.2);}
+  .bab-num{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:2px;white-space:nowrap;}
+  .bab-title{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:3px;}
+  .bab-body{padding:16px 18px;}
+  .pasal{margin-bottom:14px;}
+  .pasal:last-child{margin-bottom:0;}
+  .pasal-num{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);letter-spacing:3px;margin-bottom:5px;display:flex;align-items:center;gap:8px;}
+  .pasal-num::after{content:'';flex:1;height:1px;background:rgba(0,240,255,0.15);}
+  .pasal-text{color:var(--white);font-size:14px;line-height:1.65;opacity:0.88;}
+  .bullet-list{list-style:none;margin-top:6px;}
+  .bullet-list li{color:var(--white);font-size:14px;line-height:1.65;opacity:0.88;padding:3px 0 3px 22px;position:relative;}
+  .bullet-list li::before{content:'▸';position:absolute;left:0;color:var(--cyan);font-size:12px;}
+  .misi-list{list-style:none;margin-top:6px;counter-reset:misi;}
+  .misi-list li{color:var(--white);font-size:14px;line-height:1.65;opacity:0.88;padding:3px 0 3px 28px;position:relative;counter-increment:misi;}
+  .misi-list li::before{content:counter(misi) '.';position:absolute;left:0;color:var(--gold);font-family:'Share Tech Mono',monospace;font-size:12px;}
+  .nilai-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px;}
+  .nilai-card{background:linear-gradient(135deg,rgba(0,180,216,0.1),rgba(0,60,100,0.15));border:1px solid rgba(0,240,255,0.2);border-radius:8px;padding:10px 14px;text-align:center;}
+  .nilai-icon{font-size:20px;margin-bottom:4px;}
+  .nilai-name{font-family:'Orbitron',monospace;font-size:10px;color:var(--cyan);letter-spacing:2px;font-weight:700;}
+  .info-box{background:linear-gradient(135deg,rgba(244,165,27,0.1),rgba(255,100,0,0.05));border:1px solid rgba(244,165,27,0.35);border-radius:8px;padding:10px 14px;margin-top:6px;display:flex;gap:10px;align-items:flex-start;}
+  .info-icon{font-size:18px;flex-shrink:0;}
+  .info-text{color:var(--white);font-size:13.5px;line-height:1.6;opacity:0.9;}
+  .footer{border-top:1px solid rgba(0,240,255,0.2);margin:8px 20px 0;padding:16px 0 24px;text-align:center;}
+  .footer-line{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);letter-spacing:4px;opacity:0.6;margin-bottom:6px;}
+  .footer-brand{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;letter-spacing:5px;background:linear-gradient(90deg,var(--gold),var(--gold2),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 8px rgba(255,209,102,0.4));}
+  @keyframes scan{0%{transform:translateY(-100%);}100%{transform:translateY(2000px);}}
+  .scanline{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(transparent,rgba(0,240,255,0.08),transparent);animation:scan 6s linear infinite;pointer-events:none;z-index:2;}
 </style>
 </head>
 <body>
@@ -125,15 +67,13 @@
   <div class="content">
     <div class="header">
       <div class="corner tl"></div><div class="corner tr"></div><div class="corner bl"></div><div class="corner br"></div>
-      <div class="shield-wrap">
-        <div class="shield">
-          <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M40 4 L76 18 L76 52 Q76 74 40 86 Q4 74 4 52 L4 18 Z" fill="#071428" stroke="#00f0ff" stroke-width="2"/>
-            <path d="M40 12 L68 24 L68 50 Q68 68 40 78 Q12 68 12 50 L12 24 Z" fill="none" stroke="rgba(0,240,255,0.3)" stroke-width="1"/>
-            <text x="40" y="58" font-family="Arial Black" font-size="28" font-weight="900" fill="#00f0ff" text-anchor="middle">NC</text>
-          </svg>
-        </div>
-      </div>
+      <div class="shield-wrap"><div class="shield">
+        <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M40 4 L76 18 L76 52 Q76 74 40 86 Q4 74 4 52 L4 18 Z" fill="#071428" stroke="#00f0ff" stroke-width="2"/>
+          <path d="M40 12 L68 24 L68 50 Q68 68 40 78 Q12 68 12 50 L12 24 Z" fill="none" stroke="rgba(0,240,255,0.3)" stroke-width="1"/>
+          <text x="40" y="58" font-family="Arial Black" font-size="28" font-weight="900" fill="#00f0ff" text-anchor="middle">NC</text>
+        </svg>
+      </div></div>
       <div class="org-name">NUSACYBERA</div>
       <div class="subtitle">KOMUNITAS DIGITAL INDONESIA</div>
       <div class="scroll-title">📜 KONSTITUSI RESMI</div>
@@ -208,6 +148,49 @@
         </div>
       </div>
     </div>
+    <div class="divider" style="margin-top:8px;"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
+
+    <!-- PERINGATAN TEGAS -->
+    <div style="margin:0 20px 22px;">
+      <div style="background:linear-gradient(135deg,rgba(255,77,109,0.12),rgba(7,20,40,0.9));border:1.5px solid rgba(255,77,109,0.5);border-radius:12px;padding:18px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff4d6d,transparent);"></div>
+        <div style="font-family:'Orbitron',monospace;font-size:11px;color:#ff4d6d;letter-spacing:3px;margin-bottom:12px;text-align:center;">⚠️🚨 PERINGATAN RESMI NUSACYBERA 🚨⚠️</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:13px;color:#ffcdd2;line-height:1.8;">
+          <div style="margin-bottom:10px;">
+            📢 <strong style="color:#ff4d6d;">PENGUMUMAN RESMI</strong> hanya dikeluarkan di <strong style="color:#ffd166;">KOMUNITAS NUSACYBERA</strong> oleh:<br/>
+            👑 Owner — <strong>Risky</strong><br/>
+            🛡️ Moderator — <strong>Wildan</strong><br/>
+            🛡️ Admin — <strong>Yaya</strong><br/>
+            <span style="color:#ff4d6d;">❌ Di luar itu — PALSU!</span>
+          </div>
+          <div style="border-top:1px solid rgba(255,77,109,0.2);padding-top:10px;margin-bottom:10px;">
+            💻 <strong style="color:#ff4d6d;">FITUR RESMI</strong> hanya dikeluarkan oleh:<br/>
+            👑 Owner — <strong>Risky</strong><br/>
+            <span style="color:#ff4d6d;">❌ Di luar itu — PALSU!</span>
+          </div>
+          <div style="border-top:1px solid rgba(255,77,109,0.2);padding-top:10px;margin-bottom:10px;">
+            ⚠️ <strong style="color:#ff4d6d;">KONSEKUENSI:</strong><br/>
+            Siapapun yang ketahuan <strong>meniru pengumuman</strong> NUSACYBERA — akan langsung ditindaklanjuti tanpa terkecuali! ⚡<br/><br/>
+            ❌ Di-<strong>BLACKLIST PERMANEN</strong> dari NUSACYBERA<br/>
+            ❌ <strong>Tidak akan bisa masuk</strong> selamanya<br/>
+            ❌ Nama dicatat & disebarkan ke seluruh tim admin
+          </div>
+          <div style="border-top:1px solid rgba(255,77,109,0.2);padding-top:10px;margin-bottom:10px;">
+            📋 <strong style="color:#ffd166;">MINTA IZIN RESMI:</strong><br/>
+            Hubungi langsung:<br/>
+            👑 <strong>Risky</strong> — +62 852-3693-6481<br/>
+            🛡️ <strong>Wildan</strong> — +62 878-4502-4546<br/><br/>
+            Owner & Moderator akan berdiskusi & mempertimbangkan!<br/>
+            <strong style="color:#ff4d6d;">Sebelum dapat persetujuan — TIDAK BOLEH dipakai!</strong> 🚫
+          </div>
+          <div style="border-top:1px solid rgba(255,77,109,0.2);padding-top:10px;text-align:center;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#ff4d6d;letter-spacing:2px;">🔴 PERINGATAN INI HANYA DIKELUARKAN OLEH OWNER</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:#ffd166;letter-spacing:2px;margin-top:4px;">✅ DISETUJUI MODERATOR SELAKU OWNER PENGGANTI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="divider" style="margin-top:8px;"><div class="divider-line"></div><div class="divider-dot"></div><div class="divider-line"></div></div>
     <div class="footer">
       <div class="footer-line">◈ RESMI DIKELUARKAN OLEH ◈</div>
