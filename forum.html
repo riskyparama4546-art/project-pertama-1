@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NUSACYBERA – Forum</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+  :root{--cyan:#00f5ff;--cyan2:#00b4d8;--gold:#ffd166;--gold2:#f4a51b;--red:#ff4d6d;--green:#06ffa5;--dark:#020c1b;--dark2:#071428;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{min-height:100vh;background:#010810;font-family:'Rajdhani',sans-serif;padding:0;}
+  body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,245,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,0.03) 1px,transparent 1px);background-size:40px 40px;z-index:0;}
+  .login-wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;}
+  .login-card{width:100%;max-width:400px;background:rgba(7,20,40,0.95);border:1px solid rgba(0,245,255,0.2);border-radius:20px;padding:32px 24px;position:relative;overflow:hidden;}
+  .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+  .login-logo{text-align:center;margin-bottom:24px;}
+  .login-shield{width:56px;height:63px;filter:drop-shadow(0 0 12px var(--cyan));margin-bottom:8px;}
+  .login-title{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;letter-spacing:4px;background:linear-gradient(90deg,var(--cyan),#fff,var(--cyan2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .login-sub{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-top:4px;}
+  .login-form-title{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);letter-spacing:4px;margin-bottom:16px;text-align:center;}
+  .form-group{margin-bottom:14px;}
+  .form-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);letter-spacing:3px;margin-bottom:6px;display:block;}
+  .form-input{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(0,245,255,0.2);border-radius:8px;padding:10px 14px;color:#e8f4ff;font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;transition:border-color 0.3s;}
+  .form-input:focus{border-color:var(--cyan);box-shadow:0 0 10px rgba(0,245,255,0.1);}
+  .btn-login{width:100%;padding:12px;border-radius:10px;border:1.5px solid var(--cyan);background:rgba(0,245,255,0.1);color:var(--cyan);font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:3px;cursor:pointer;transition:all 0.3s;}
+  .btn-login:hover{background:rgba(0,245,255,0.2);box-shadow:0 0 20px rgba(0,245,255,0.2);}
+  .role-chips{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+  .role-chip{flex:1;min-width:80px;padding:8px 10px;border-radius:20px;border:1px solid rgba(0,245,255,0.2);background:rgba(0,0,0,0.3);color:var(--cyan2);font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;cursor:pointer;text-align:center;transition:all 0.2s;}
+  .role-chip.active{background:rgba(0,245,255,0.15);border-color:var(--cyan);color:var(--cyan);}
+  .app{display:none;position:relative;z-index:1;}
+  .app.show{display:block;}
+  .navbar{background:rgba(7,20,40,0.95);border-bottom:1px solid rgba(0,245,255,0.15);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;}
+  .nav-logo{font-family:'Orbitron',monospace;font-size:14px;font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,var(--cyan),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex:1;}
+  .nav-user{display:flex;align-items:center;gap:8px;background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.2);border-radius:20px;padding:5px 12px;}
+  .nav-avatar{width:24px;height:24px;border-radius:50%;border:1px solid var(--cyan);background:var(--dark2);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:9px;color:var(--cyan);}
+  .nav-name{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);}
+  .nav-role-badge{font-family:'Share Tech Mono',monospace;font-size:8px;padding:2px 8px;border-radius:10px;}
+  .badge-owner{background:rgba(255,209,102,0.2);color:var(--gold);border:1px solid rgba(255,209,102,0.3);}
+  .badge-admin{background:rgba(0,245,255,0.1);color:var(--cyan);border:1px solid rgba(0,245,255,0.2);}
+  .badge-member{background:rgba(6,255,165,0.1);color:var(--green);border:1px solid rgba(6,255,165,0.2);}
+  .btn-logout{background:rgba(255,77,109,0.1);border:1px solid rgba(255,77,109,0.3);color:var(--red);font-family:'Share Tech Mono',monospace;font-size:9px;padding:5px 10px;border-radius:10px;cursor:pointer;letter-spacing:1px;}
+  .forum-wrap{max-width:600px;margin:0 auto;padding:16px;}
+  .status-bar{background:rgba(7,20,40,0.8);border:1px solid rgba(0,245,255,0.15);border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:pulse 1.5s infinite;}
+  .status-dot.open{background:var(--green);box-shadow:0 0 8px var(--green);}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+  .status-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);flex:1;letter-spacing:2px;}
+  .status-time{font-family:'Orbitron',monospace;font-size:11px;color:var(--gold);}
+  .post-form{background:rgba(7,20,40,0.9);border:1px solid rgba(0,245,255,0.2);border-radius:14px;padding:16px;margin-bottom:16px;position:relative;}
+  .post-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+  .post-form-title{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan2);letter-spacing:3px;margin-bottom:12px;}
+  .post-input{width:100%;background:rgba(0,0,0,0.4);border:1px solid rgba(0,245,255,0.15);border-radius:8px;padding:10px 14px;color:#e8f4ff;font-family:'Rajdhani',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:80px;margin-bottom:10px;transition:border-color 0.3s;}
+  .post-input:focus{border-color:var(--cyan);}
+  .post-actions{display:flex;gap:8px;align-items:center;}
+  .post-category{flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(0,245,255,0.15);border-radius:8px;padding:8px 12px;color:#e8f4ff;font-family:'Share Tech Mono',monospace;font-size:10px;outline:none;cursor:pointer;}
+  .post-category option{background:#071428;}
+  .btn-post{padding:8px 20px;border-radius:8px;border:1.5px solid var(--cyan);background:rgba(0,245,255,0.1);color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;}
+  .btn-post:hover{background:rgba(0,245,255,0.2);}
+  .filter-tabs{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:4px;}
+  .filter-tab{padding:6px 14px;border-radius:20px;border:1px solid rgba(0,245,255,0.2);background:rgba(0,0,0,0.3);color:var(--cyan2);font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;cursor:pointer;white-space:nowrap;transition:all 0.2s;}
+  .filter-tab.active{background:rgba(0,245,255,0.15);border-color:var(--cyan);color:var(--cyan);}
+  .posts-list{display:flex;flex-direction:column;gap:12px;}
+  .post-card{background:rgba(7,20,40,0.85);border:1px solid rgba(0,245,255,0.12);border-radius:12px;padding:14px 16px;transition:border-color 0.2s;animation:slideIn 0.3s ease;}
+  @keyframes slideIn{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+  .post-card:hover{border-color:rgba(0,245,255,0.25);}
+  .post-card.pinned{border-color:rgba(255,209,102,0.4);background:rgba(255,209,102,0.05);}
+  .post-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .post-avatar{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--cyan);background:var(--dark2);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:11px;font-weight:900;color:var(--cyan);flex-shrink:0;}
+  .post-avatar.owner-av{border-color:var(--gold);color:var(--gold);}
+  .post-meta{flex:1;}
+  .post-name{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:#e8f4ff;}
+  .post-time{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(0,180,216,0.5);margin-top:1px;}
+  .post-badges{display:flex;gap:4px;flex-wrap:wrap;}
+  .cat-badge{font-family:'Share Tech Mono',monospace;font-size:8px;padding:2px 8px;border-radius:10px;}
+  .cat-diskusi{background:rgba(0,245,255,0.1);color:var(--cyan);border:1px solid rgba(0,245,255,0.2);}
+  .cat-info{background:rgba(255,209,102,0.1);color:var(--gold);border:1px solid rgba(255,209,102,0.2);}
+  .cat-saran{background:rgba(6,255,165,0.1);color:var(--green);border:1px solid rgba(6,255,165,0.2);}
+  .cat-hiburan{background:rgba(255,77,109,0.1);color:var(--red);border:1px solid rgba(255,77,109,0.2);}
+  .pin-badge{background:rgba(255,209,102,0.15);color:var(--gold);border:1px solid rgba(255,209,102,0.3);font-family:'Share Tech Mono',monospace;font-size:8px;padding:2px 8px;border-radius:10px;}
+  .post-content{font-family:'Rajdhani',sans-serif;font-size:14px;color:#e0eeff;line-height:1.6;margin-bottom:10px;}
+  .post-footer{display:flex;gap:8px;align-items:center;}
+  .btn-like{background:none;border:1px solid rgba(0,245,255,0.15);border-radius:20px;padding:4px 12px;color:var(--cyan2);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all 0.2s;letter-spacing:1px;}
+  .btn-like:hover,.btn-like.liked{background:rgba(0,245,255,0.1);border-color:var(--cyan);color:var(--cyan);}
+  .btn-reply{background:none;border:1px solid rgba(6,255,165,0.15);border-radius:20px;padding:4px 12px;color:rgba(6,255,165,0.6);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all 0.2s;letter-spacing:1px;}
+  .btn-reply:hover{background:rgba(6,255,165,0.1);border-color:var(--green);color:var(--green);}
+  .btn-delete{background:none;border:1px solid rgba(255,77,109,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,77,109,0.5);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all 0.2s;}
+  .btn-delete:hover{background:rgba(255,77,109,0.1);border-color:var(--red);color:var(--red);}
+  .btn-pin{background:none;border:1px solid rgba(255,209,102,0.15);border-radius:20px;padding:4px 12px;color:rgba(255,209,102,0.5);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;transition:all 0.2s;}
+  .btn-pin:hover{background:rgba(255,209,102,0.1);border-color:var(--gold);color:var(--gold);}
+  .replies{margin-top:10px;border-top:1px solid rgba(0,245,255,0.08);padding-top:10px;display:none;}
+  .replies.show{display:block;}
+  .reply-item{display:flex;gap:8px;margin-bottom:8px;}
+  .reply-avatar{width:24px;height:24px;border-radius:50%;border:1px solid rgba(0,245,255,0.3);background:var(--dark2);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan2);flex-shrink:0;}
+  .reply-bubble{background:rgba(0,0,0,0.3);border-radius:8px;padding:6px 10px;flex:1;}
+  .reply-name{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--cyan2);margin-bottom:2px;}
+  .reply-text{font-family:'Rajdhani',sans-serif;font-size:13px;color:#e0eeff;}
+  .reply-form{display:flex;gap:8px;margin-top:8px;}
+  .reply-input{flex:1;background:rgba(0,0,0,0.4);border:1px solid rgba(0,245,255,0.15);border-radius:8px;padding:7px 12px;color:#e8f4ff;font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;}
+  .btn-send-reply{padding:7px 14px;border-radius:8px;border:1px solid var(--green);background:rgba(6,255,165,0.1);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:9px;cursor:pointer;}
+  .empty-state{text-align:center;padding:40px 20px;}
+  .empty-icon{font-size:40px;margin-bottom:10px;}
+  .empty-text{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(0,180,216,0.4);letter-spacing:2px;}
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(6,255,165,0.15);border:1px solid var(--green);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;padding:10px 20px;border-radius:20px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:99;white-space:nowrap;}
+  .toast.show{opacity:1;}
+  .upcoming-wrap{display:flex;flex-direction:column;gap:12px;}
+  .upcoming-card{background:linear-gradient(135deg,rgba(255,209,102,0.08),rgba(7,20,40,0.9));border:1px solid rgba(255,209,102,0.25);border-radius:14px;padding:16px;position:relative;overflow:hidden;animation:slideIn 0.3s ease;}
+  .upcoming-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .upcoming-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .upcoming-icon-big{font-size:28px;flex-shrink:0;}
+  .upcoming-meta{flex:1;}
+  .upcoming-name{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--gold2);letter-spacing:2px;}
+  .upcoming-status{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,209,102,0.6);letter-spacing:2px;margin-top:3px;}
+  .upcoming-badge{font-family:'Share Tech Mono',monospace;font-size:8px;padding:3px 10px;border-radius:10px;background:rgba(255,209,102,0.12);color:var(--gold);border:1px solid rgba(255,209,102,0.25);white-space:nowrap;}
+  .upcoming-desc{font-family:'Rajdhani',sans-serif;font-size:13px;color:#c8dff0;line-height:1.6;opacity:0.85;}
+  .upcoming-footer{margin-top:10px;display:flex;justify-content:space-between;align-items:center;}
+  .upcoming-by{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(255,209,102,0.4);}
+  .btn-del-upcoming{background:none;border:1px solid rgba(255,77,109,0.15);border-radius:20px;padding:3px 10px;color:rgba(255,77,109,0.5);font-family:'Share Tech Mono',monospace;font-size:8px;cursor:pointer;transition:all 0.2s;}
+  .btn-del-upcoming:hover{background:rgba(255,77,109,0.1);border-color:var(--red);color:var(--red);}
+  .upcoming-form{background:rgba(7,20,40,0.9);border:1px solid rgba(255,209,102,0.2);border-radius:14px;padding:16px;margin-bottom:16px;position:relative;display:none;}
+  .upcoming-form.show{display:block;}
+  .upcoming-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .upcoming-form-title{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:12px;}
+  .upcoming-empty{text-align:center;padding:30px 20px;}
+  .upcoming-empty-icon{font-size:36px;margin-bottom:8px;}
+  .upcoming-empty-text{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(255,209,102,0.3);letter-spacing:2px;}
+</style>
+</head>
+<body>
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg class="login-shield" viewBox="0 0 80 90" fill="none">
+        <path d="M40 4 L76 18 L76 52 Q76 74 40 86 Q4 74 4 52 L4 18 Z" fill="#071428" stroke="#00f5ff" stroke-width="2"/>
+        <path d="M40 12 L68 24 L68 50 Q68 68 40 78 Q12 68 12 50 L12 24 Z" fill="none" stroke="rgba(0,245,255,0.3)" stroke-width="1"/>
+        <text x="40" y="58" font-family="Arial Black" font-size="26" font-weight="900" fill="#00f5ff" text-anchor="middle">NC</text>
+      </svg>
+      <div class="login-title">NUSACYBERA</div>
+      <div class="login-sub">◈ FORUM KOMUNITAS ◈</div>
+    </div>
+    <div class="login-form-title">◈ PILIH ROLE KAMU ◈</div>
+    <div class="role-chips">
+      <div class="role-chip active" onclick="selectRole(this,'member')">👥 Member</div>
+      <div class="role-chip" onclick="selectRole(this,'moderator')">🛡️ Mod</div>
+      <div class="role-chip" onclick="selectRole(this,'admin')">🛡️ Admin</div>
+      <div class="role-chip" onclick="selectRole(this,'owner')">👑 Owner</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">◈ NAMA KAMU</label>
+      <input class="form-input" id="loginName" type="text" placeholder="Masukkan nama kamu..."/>
+    </div>
+    <div class="form-group" id="passGroup" style="display:none;">
+      <label class="form-label">◈ PASSWORD</label>
+      <input class="form-input" id="loginPass" type="password" placeholder="Masukkan password..."/>
+    </div>
+    <button class="btn-login" onclick="doLogin()">🚀 MASUK KE FORUM</button>
+  </div>
+</div>
+
+<div class="app" id="mainApp">
+  <div class="navbar">
+    <div class="nav-logo">NC FORUM</div>
+    <div class="nav-user">
+      <div class="nav-avatar" id="navAvatar">?</div>
+      <div class="nav-name" id="navName">-</div>
+      <div class="nav-role-badge" id="navBadge">-</div>
+    </div>
+    <button class="btn-logout" onclick="doLogout()">EXIT</button>
+  </div>
+  <div class="forum-wrap">
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <div class="status-text" id="statusText">-</div>
+      <div class="status-time" id="statusTime">--:--</div>
+    </div>
+    <div class="post-form">
+      <div class="post-form-title">◈ TULIS POSTINGAN</div>
+      <textarea class="post-input" id="postInput" placeholder="Tulis sesuatu untuk forum NUSACYBERA..."></textarea>
+      <div class="post-actions">
+        <select class="post-category" id="postCategory">
+          <option value="diskusi">💬 Diskusi</option>
+          <option value="info">📢 Info</option>
+          <option value="saran">💡 Saran</option>
+          <option value="hiburan">😄 Hiburan</option>
+        </select>
+        <button class="btn-post" onclick="submitPost()">📤 POST</button>
+      </div>
+    </div>
+    <div class="filter-tabs" style="margin-bottom:16px;">
+      <div class="filter-tab active" onclick="switchTab(this,'forum')">💬 Forum</div>
+      <div class="filter-tab" onclick="switchTab(this,'upcoming')">🔮 Update Mendatang</div>
+    </div>
+    <div id="tabForum">
+      <div class="filter-tabs">
+        <div class="filter-tab active" onclick="filterPosts(this,'semua')">🔥 Semua</div>
+        <div class="filter-tab" onclick="filterPosts(this,'diskusi')">💬 Diskusi</div>
+        <div class="filter-tab" onclick="filterPosts(this,'info')">📢 Info</div>
+        <div class="filter-tab" onclick="filterPosts(this,'saran')">💡 Saran</div>
+        <div class="filter-tab" onclick="filterPosts(this,'hiburan')">😄 Hiburan</div>
+      </div>
+      <div class="posts-list" id="postsList"></div>
+    </div>
+    <div id="tabUpcoming" style="display:none;">
+      <div class="upcoming-form" id="upcomingForm">
+        <div class="upcoming-form-title">🔮 TAMBAH FITUR MENDATANG</div>
+        <div class="form-group">
+          <label class="form-label">◈ NAMA FITUR</label>
+          <input class="form-input" id="upName" type="text" placeholder="Nama fitur baru..."/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">◈ IKON (emoji)</label>
+          <input class="form-input" id="upIcon" type="text" placeholder="Contoh: 🚪 atau 🌙"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">◈ STATUS</label>
+          <select class="form-input post-category" id="upStatus">
+            <option value="Dalam Proses 🔧">Dalam Proses 🔧</option>
+            <option value="Sedang Dicek 🧪">Sedang Dicek 🧪</option>
+            <option value="Coming Soon ⏳">Coming Soon ⏳</option>
+            <option value="Hampir Selesai ⚡">Hampir Selesai ⚡</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">◈ DESKRIPSI</label>
+          <textarea class="post-input" id="upDesc" placeholder="Jelaskan fitur ini..."></textarea>
+        </div>
+        <button class="btn-post" style="width:100%" onclick="submitUpcoming()">🔮 TAMBAH FITUR</button>
+      </div>
+      <div class="upcoming-wrap" id="upcomingList"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function switchTab(el,tab){document.querySelectorAll('.filter-tabs .filter-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('tabForum').style.display=tab==='forum'?'block':'none';document.getElementById('tabUpcoming').style.display=tab==='upcoming'?'block':'none';if(tab==='upcoming')renderUpcoming();}
+
+let upcomings=JSON.parse(localStorage.getItem('nc_upcoming')||'[]');
+if(upcomings.length===0){upcomings=[{id:1,icon:'🚪',name:'FITUR KELUAR GRUP',status:'Dalam Proses 🔧',desc:'Member bisa keluar grup secara sopan & transparan via form web.',by:'Risky 👑',time:'16 Mar 2026'},{id:2,icon:'🌙',name:'FITUR SPESIAL LEBARAN',status:'Sedang Dicek 🧪',desc:'Halaman spesial Idul Fitri dengan countdown lebaran & ucapan resmi.',by:'Risky 👑',time:'16 Mar 2026'},{id:3,icon:'🎂',name:'UPDATE ULTAH OWNER',status:'Coming Soon ⏳',desc:'Update besar-besaran bertepatan dengan ulang tahun owner pada 11 April.',by:'Risky 👑',time:'16 Mar 2026'},{id:4,icon:'👥',name:'TAMBAH ADMIN 5 & 6',status:'Coming Soon ⏳',desc:'Dua admin baru akan dipilih secara acak dari member aktif.',by:'Risky 👑',time:'16 Mar 2026'}];localStorage.setItem('nc_upcoming',JSON.stringify(upcomings));}
+
+function renderUpcoming(){const list=document.getElementById('upcomingList');const isPriv=currentUser&&(currentUser.role==='owner'||currentUser.role==='moderator');const form=document.getElementById('upcomingForm');if(form)form.classList.toggle('show',!!isPriv);if(upcomings.length===0){list.innerHTML=`<div class="upcoming-empty"><div class="upcoming-empty-icon">🔮</div><div class="upcoming-empty-text">BELUM ADA FITUR MENDATANG</div></div>`;return;}list.innerHTML=upcomings.map(u=>`<div class="upcoming-card"><div class="upcoming-header"><div class="upcoming-icon-big">${u.icon}</div><div class="upcoming-meta"><div class="upcoming-name">${u.name}</div><div class="upcoming-status">${u.status}</div></div><div class="upcoming-badge">MENDATANG</div></div><div class="upcoming-desc">${u.desc}</div><div class="upcoming-footer"><div class="upcoming-by">📌 ${u.by} • ${u.time}</div>${isPriv?`<button class="btn-del-upcoming" onclick="deleteUpcoming(${u.id})">🗑️ Hapus</button>`:''}</div></div>`).join('');}
+
+function submitUpcoming(){const name=document.getElementById('upName').value.trim();const icon=document.getElementById('upIcon').value.trim()||'🔮';const status=document.getElementById('upStatus').value;const desc=document.getElementById('upDesc').value.trim();if(!name){showToast('⚠️ Isi nama fitur dulu!');return;}if(!desc){showToast('⚠️ Isi deskripsi dulu!');return;}const now=new Date().toLocaleDateString('id-ID');upcomings.unshift({id:Date.now(),icon,name,status,desc,by:`${currentUser.name} ${currentUser.role==='owner'?'👑':'🛡️'}`,time:now});localStorage.setItem('nc_upcoming',JSON.stringify(upcomings));document.getElementById('upName').value='';document.getElementById('upIcon').value='';document.getElementById('upDesc').value='';renderUpcoming();showToast('✅ Fitur mendatang ditambahkan!');}
+
+function deleteUpcoming(id){upcomings=upcomings.filter(u=>u.id!==id);localStorage.setItem('nc_upcoming',JSON.stringify(upcomings));renderUpcoming();showToast('🗑️ Dihapus!');}
+
+const USERS = {
+  'NC_OWNER_2025':   { name:'Risky',  role:'owner',     label:'👑 Owner' },
+  'NC_MOD_WILDAN':   { name:'Wildan', role:'moderator',  label:'🛡️ Mod' },
+  'NC_ADMIN_LOUIS':  { name:'Louis',  role:'admin',      label:'🛡️ Admin' },
+  'NC_MEMBER_2025':  { name:null,     role:'member',     label:'👥 Member' }
+};
+
+let currentUser=null,selectedRole='member',posts=JSON.parse(localStorage.getItem('nc_forum_posts')||'[]'),currentFilter='semua';
+
+function selectRole(el,role){document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');selectedRole=role;document.getElementById('passGroup').style.display=(role==='admin'||role==='owner'||role==='moderator')?'block':'none';}
+
+function doLogin(){const name=document.getElementById('loginName').value.trim();const pass=document.getElementById('loginPass').value.trim();if(!name){showToast('⚠️ Isi nama kamu dulu!');return;}if(selectedRole==='member'){if(pass&&pass!=='NC_MEMBER_2025'){showToast('❌ Password member salah!');return;}currentUser={name,role:'member',label:'👥 Member'};}else{if(!pass){showToast('⚠️ Masukkan password!');return;}const found=USERS[pass];if(!found){showToast('❌ Password salah!');return;}if(found.role==='member'){showToast('❌ Password tidak sesuai role!');return;}if(selectedRole==='owner'&&found.role!=='owner'){showToast('❌ Bukan password Owner!');return;}if(selectedRole==='moderator'&&found.role!=='moderator'){showToast('❌ Bukan password Moderator!');return;}if(selectedRole==='admin'&&(found.role==='owner'||found.role==='moderator')){showToast('❌ Bukan password Admin!');return;}currentUser={name:found.name||name,role:found.role,label:found.label};}document.getElementById('loginScreen').style.display='none';document.getElementById('mainApp').classList.add('show');document.getElementById('navAvatar').textContent=currentUser.name.charAt(0).toUpperCase();document.getElementById('navName').textContent=currentUser.name;const badge=document.getElementById('navBadge');badge.textContent=currentUser.label;badge.className='nav-role-badge';if(currentUser.role==='owner')badge.classList.add('badge-owner');else if(currentUser.role==='moderator'||currentUser.role==='admin')badge.classList.add('badge-admin');else badge.classList.add('badge-member');const av=document.getElementById('navAvatar');if(currentUser.role==='owner'){av.style.borderColor='var(--gold)';av.style.color='var(--gold)';}else if(currentUser.role==='moderator'){av.style.borderColor='var(--cyan)';av.style.color='var(--cyan)';}updateStatus();renderPosts();showToast(`✅ Selamat datang, ${currentUser.name}!`);}
+
+function doLogout(){currentUser=null;document.getElementById('mainApp').classList.remove('show');document.getElementById('loginScreen').style.display='flex';document.getElementById('loginName').value='';document.getElementById('loginPass').value='';showToast('👋 Sampai jumpa!');}
+
+function updateStatus(){const now=new Date();const utc=now.getTime()+now.getTimezoneOffset()*60000;const wib=new Date(utc+7*3600000);const h=wib.getHours(),m=wib.getMinutes(),s=wib.getSeconds();const pad=n=>String(n).padStart(2,'0');const open=h*3600+m*60+s>=6*3600;document.getElementById('statusDot').className='status-dot'+(open?' open':'');document.getElementById('statusText').textContent=open?'GRUP WA SEDANG BUKA':'GRUP WA SEDANG TUTUP — FORUM TETAP AKTIF!';document.getElementById('statusTime').textContent=`${pad(h)}:${pad(m)}:${pad(s)} WIB`;}
+setInterval(updateStatus,1000);
+
+function submitPost(){const text=document.getElementById('postInput').value.trim();const cat=document.getElementById('postCategory').value;if(!text){showToast('⚠️ Tulis sesuatu dulu!');return;}if(!currentUser)return;const post={id:Date.now(),name:currentUser.name,role:currentUser.role,label:currentUser.label,text,category:cat,time:new Date().toLocaleString('id-ID'),likes:0,likedBy:[],pinned:false,replies:[]};posts.unshift(post);savePosts();renderPosts();document.getElementById('postInput').value='';showToast('✅ Postingan berhasil!');}
+
+function filterPosts(el,cat){document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');currentFilter=cat;renderPosts();}
+
+function renderPosts(){const list=document.getElementById('postsList');let filtered=currentFilter==='semua'?posts:posts.filter(p=>p.category===currentFilter);filtered=[...filtered.filter(p=>p.pinned),...filtered.filter(p=>!p.pinned)];if(filtered.length===0){list.innerHTML=`<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">BELUM ADA POSTINGAN</div></div>`;return;}list.innerHTML=filtered.map(post=>{const catClass={diskusi:'cat-diskusi',info:'cat-info',saran:'cat-saran',hiburan:'cat-hiburan'}[post.category];const catLabel={diskusi:'💬 Diskusi',info:'📢 Info',saran:'💡 Saran',hiburan:'😄 Hiburan'}[post.category];const avatarClass=post.role==='owner'?'post-avatar owner-av':post.role==='admin'?'post-avatar admin-av':'post-avatar';const liked=post.likedBy&&post.likedBy.includes(currentUser?.name);const canDelete=currentUser&&(currentUser.role==='owner'||currentUser.role==='moderator'||currentUser.role==='admin'||currentUser.name===post.name);const canPin=currentUser&&(currentUser.role==='owner'||currentUser.role==='moderator'||currentUser.role==='admin');const repliesHtml=post.replies.map(r=>`<div class="reply-item"><div class="reply-avatar">${r.name.charAt(0).toUpperCase()}</div><div class="reply-bubble"><div class="reply-name">${r.name} ${r.label}</div><div class="reply-text">${r.text}</div></div></div>`).join('');return `<div class="post-card ${post.pinned?'pinned':''}" id="post-${post.id}"><div class="post-header"><div class="${avatarClass}">${post.name.charAt(0).toUpperCase()}</div><div class="post-meta"><div class="post-name">${post.name}</div><div class="post-time">${post.time}</div></div><div class="post-badges"><span class="nav-role-badge ${post.role==='owner'?'badge-owner':post.role==='admin'||post.role==='moderator'?'badge-admin':'badge-member'}">${post.label}</span><span class="cat-badge ${catClass}">${catLabel}</span>${post.pinned?'<span class="pin-badge">📌 PIN</span>':''}</div></div><div class="post-content">${post.text}</div><div class="post-footer"><button class="btn-like ${liked?'liked':''}" onclick="likePost(${post.id})">❤️ ${post.likes}</button><button class="btn-reply" onclick="toggleReplies(${post.id})">💬 ${post.replies.length} Reply</button>${canPin?`<button class="btn-pin" onclick="pinPost(${post.id})">${post.pinned?'📌 Unpin':'📌 Pin'}</button>`:''} ${canDelete?`<button class="btn-delete" onclick="deletePost(${post.id})">🗑️ Hapus</button>`:''}</div><div class="replies" id="replies-${post.id}">${repliesHtml}<div class="reply-form"><input class="reply-input" id="replyInput-${post.id}" placeholder="Tulis balasan..."/><button class="btn-send-reply" onclick="submitReply(${post.id})">📤</button></div></div></div>`;}).join('');}
+
+function likePost(id){const post=posts.find(p=>p.id===id);if(!post||!currentUser)return;if(!post.likedBy)post.likedBy=[];if(post.likedBy.includes(currentUser.name)){post.likedBy=post.likedBy.filter(n=>n!==currentUser.name);post.likes--;}else{post.likedBy.push(currentUser.name);post.likes++;}savePosts();renderPosts();}
+function pinPost(id){if(!currentUser||(currentUser.role!=='owner'&&currentUser.role!=='moderator'&&currentUser.role!=='admin'))return;const post=posts.find(p=>p.id===id);if(!post)return;post.pinned=!post.pinned;savePosts();renderPosts();showToast(post.pinned?'📌 Post di-pin!':'📌 Pin dilepas!');}
+function deletePost(id){if(!currentUser)return;const post=posts.find(p=>p.id===id);if(!post)return;if(currentUser.role!=='owner'&&currentUser.role!=='moderator'&&currentUser.role!=='admin'&&currentUser.name!==post.name)return;posts=posts.filter(p=>p.id!==id);savePosts();renderPosts();showToast('🗑️ Post dihapus!');}
+function toggleReplies(id){const el=document.getElementById(`replies-${id}`);el.classList.toggle('show');}
+function submitReply(id){const input=document.getElementById(`replyInput-${id}`);const text=input.value.trim();if(!text||!currentUser)return;const post=posts.find(p=>p.id===id);if(!post)return;post.replies.push({name:currentUser.name,label:currentUser.label,text,time:new Date().toLocaleString('id-ID')});input.value='';savePosts();renderPosts();setTimeout(()=>{const replies=document.getElementById(`replies-${id}`);if(replies)replies.classList.add('show');},50);showToast('✅ Balasan terkirim!');}
+function savePosts(){localStorage.setItem('nc_forum_posts',JSON.stringify(posts));}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>
